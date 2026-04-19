@@ -111,12 +111,32 @@ const Navbar = () => {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link to="/login" className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white px-4 py-2.5 rounded-xl hover:bg-white/[0.06] transition-all duration-200">
-              <LogIn size={15} /> Login
-            </Link>
-            <Link to="/register" className="flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-indigo-600 text-white shadow-glow hover:shadow-[0_0_30px_rgba(129,140,248,0.5)] hover:-translate-y-0.5 transition-all duration-300">
-              <UserPlus size={15} /> Sign Up
-            </Link>
+            {localStorage.getItem('user') ? (
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-semibold text-slate-300">
+                  Hi, {JSON.parse(localStorage.getItem('user')).username}
+                </span>
+                <button
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.reload();
+                  }}
+                  className="flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-xl bg-white/[0.05] border border-white/[0.08] text-white hover:bg-red-500/20 hover:border-red-500/50 hover:text-red-400 transition-all duration-200"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link to="/login" className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white px-4 py-2.5 rounded-xl hover:bg-white/[0.06] transition-all duration-200">
+                  <LogIn size={15} /> Login
+                </Link>
+                <Link to="/register" className="flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-indigo-600 text-white shadow-glow hover:shadow-[0_0_30px_rgba(129,140,248,0.5)] hover:-translate-y-0.5 transition-all duration-300">
+                  <UserPlus size={15} /> Sign Up
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Toggle */}
@@ -156,12 +176,28 @@ const Navbar = () => {
               </motion.div>
             ))}
             <div className="mt-auto flex flex-col gap-3">
-              <Link to="/login" className="btn-outline justify-center py-4 text-base" onClick={() => setIsOpen(false)}>
-                Login
-              </Link>
-              <Link to="/register" className="btn-primary justify-center py-4 text-base" onClick={() => setIsOpen(false)}>
-                Sign Up
-              </Link>
+              {localStorage.getItem('user') ? (
+                <button 
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    setIsOpen(false);
+                    window.location.reload();
+                  }}
+                  className="btn-outline justify-center py-4 text-base border-red-500/50 text-red-400 hover:bg-red-500/10"
+                >
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <Link to="/login" className="btn-outline justify-center py-4 text-base" onClick={() => setIsOpen(false)}>
+                    Login
+                  </Link>
+                  <Link to="/register" className="btn-primary justify-center py-4 text-base" onClick={() => setIsOpen(false)}>
+                    Sign Up
+                  </Link>
+                </>
+              )}
             </div>
           </motion.div>
         )}

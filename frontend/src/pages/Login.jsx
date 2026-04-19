@@ -2,17 +2,38 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
+import api from '../services/api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Simulate login for now
-    console.log('Logging in with', email, password);
-    navigate('/');
+    setError('');
+    setLoading(true);
+    try {
+      const response = await api.post('/auth/login', { email, password });
+      
+      // Save token and user info
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify({
+        id: response.data.id,
+        username: response.data.username,
+        roles: response.data.roles
+      }));
+
+      // Redirect to home page
+      navigate('/');
+      window.location.reload(); // Quick way to update navbar state
+    } catch (err) {
+      setError(err.response?.data?.message || 'Invalid email or password.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,6 +55,12 @@ const Login = () => {
           <h2 className="text-3xl font-black text-white mb-2">Welcome Back</h2>
           <p className="text-slate-400 text-sm">Enter your details to access your account.</p>
         </div>
+
+        {error && (
+          <div className="mb-4 p-3 rounded-xl bg-red-500/20 border border-red-500/50 text-red-400 text-sm font-medium text-center">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleLogin} className="space-y-5">
           <div className="space-y-1.5">
@@ -71,9 +98,10 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full btn-primary py-4 flex justify-center mt-4 text-base"
+            disabled={loading}
+            className="w-full btn-primary py-4 flex justify-center mt-4 text-base disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            Sign In <ArrowRight size={18} />
+            {loading ? 'Signing in...' : <><span className="mr-2">Sign In</span> <ArrowRight size={18} /></>}
           </button>
         </form>
 

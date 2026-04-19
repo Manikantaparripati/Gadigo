@@ -2,18 +2,36 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, ArrowRight } from 'lucide-react';
+import api from '../services/api';
 
 const Register = () => {
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    // Simulate registration
-    console.log('Registering', name, email);
-    navigate('/');
+    setError('');
+    setLoading(true);
+    try {
+      await api.post('/auth/register', {
+        firstName,
+        lastName,
+        email,
+        password,
+        role: 'user'
+      });
+      // Redirect to login after successful registration
+      navigate('/login');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,19 +54,41 @@ const Register = () => {
           <p className="text-slate-400 text-sm">Join Gadigo to start your luxury journey.</p>
         </div>
 
+        {error && (
+          <div className="mb-4 p-3 rounded-xl bg-red-500/20 border border-red-500/50 text-red-400 text-sm font-medium text-center">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleRegister} className="space-y-5">
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Full Name</label>
-            <div className="relative">
-              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="John Doe"
-                className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-slate-600 outline-none focus:border-primary/50 focus:bg-white/[0.05] transition-all text-sm font-medium"
-              />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">First Name</label>
+              <div className="relative">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <input
+                  type="text"
+                  required
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="John"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-slate-600 outline-none focus:border-primary/50 focus:bg-white/[0.05] transition-all text-sm font-medium"
+                />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Last Name</label>
+              <div className="relative">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <input
+                  type="text"
+                  required
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Doe"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-slate-600 outline-none focus:border-primary/50 focus:bg-white/[0.05] transition-all text-sm font-medium"
+                />
+              </div>
             </div>
           </div>
 
@@ -84,9 +124,10 @@ const Register = () => {
 
           <button
             type="submit"
-            className="w-full btn-primary py-4 flex justify-center mt-4 text-base"
+            disabled={loading}
+            className="w-full btn-primary py-4 flex justify-center mt-4 text-base disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            Create Account <ArrowRight size={18} />
+            {loading ? 'Creating Account...' : <><span className="mr-2">Create Account</span> <ArrowRight size={18} /></>}
           </button>
         </form>
 
