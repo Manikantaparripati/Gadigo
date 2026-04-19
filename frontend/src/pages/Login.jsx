@@ -30,7 +30,12 @@ const Login = () => {
       navigate('/');
       window.location.reload(); // Quick way to update navbar state
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password.');
+      console.error('Login Error:', err);
+      if (err.response) {
+        setError(err.response?.data?.message || 'Invalid email or password.');
+      } else {
+        setError('Network error: Unable to reach the server. Please check your backend connection.');
+      }
     } finally {
       setLoading(false);
     }

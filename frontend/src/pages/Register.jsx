@@ -28,7 +28,12 @@ const Register = () => {
       // Redirect to login after successful registration
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      console.error('Registration Error:', err);
+      if (err.response) {
+        setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      } else {
+        setError('Network error: Unable to reach the server. Please check your backend connection.');
+      }
     } finally {
       setLoading(false);
     }
