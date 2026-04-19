@@ -6,21 +6,20 @@ import Rentals from './pages/Rentals';
 import Packages from './pages/Packages';
 import Places from './pages/Places';
 import Owners from './pages/Owners';
+import './App.css';
 
 function App() {
   return (
     <Router>
-      <div className="app">
+      <div className="min-h-screen bg-[#020617]">
         <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/rentals/:type" element={<Rentals />} />
-            <Route path="/packages" element={<Packages />} />
-            <Route path="/places" element={<Places />} />
-            <Route path="/owners" element={<Owners />} />
-          </Routes>
-        </main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/rentals/:type" element={<Rentals />} />
+          <Route path="/packages" element={<Packages />} />
+          <Route path="/places" element={<Places />} />
+          <Route path="/owners" element={<Owners />} />
+        </Routes>
       </div>
     </Router>
   );
