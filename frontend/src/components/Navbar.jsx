@@ -111,12 +111,12 @@ const Navbar = () => {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden lg:flex items-center gap-3">
-            <button className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white px-4 py-2.5 rounded-xl hover:bg-white/[0.06] transition-all duration-200">
+            <Link to="/login" className="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white px-4 py-2.5 rounded-xl hover:bg-white/[0.06] transition-all duration-200">
               <LogIn size={15} /> Login
-            </button>
-            <button className="flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-indigo-600 text-white shadow-glow hover:shadow-[0_0_30px_rgba(129,140,248,0.5)] hover:-translate-y-0.5 transition-all duration-300">
+            </Link>
+            <Link to="/register" className="flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary to-indigo-600 text-white shadow-glow hover:shadow-[0_0_30px_rgba(129,140,248,0.5)] hover:-translate-y-0.5 transition-all duration-300">
               <UserPlus size={15} /> Sign Up
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Toggle */}
@@ -156,12 +156,12 @@ const Navbar = () => {
               </motion.div>
             ))}
             <div className="mt-auto flex flex-col gap-3">
-              <button className="btn-outline justify-center py-4 text-base" onClick={() => setIsOpen(false)}>
+              <Link to="/login" className="btn-outline justify-center py-4 text-base" onClick={() => setIsOpen(false)}>
                 Login
-              </button>
-              <button className="btn-primary justify-center py-4 text-base" onClick={() => setIsOpen(false)}>
+              </Link>
+              <Link to="/register" className="btn-primary justify-center py-4 text-base" onClick={() => setIsOpen(false)}>
                 Sign Up
-              </button>
+              </Link>
             </div>
           </motion.div>
         )}

@@ -6,6 +6,8 @@ import Rentals from './pages/Rentals';
 import Packages from './pages/Packages';
 import Places from './pages/Places';
 import Owners from './pages/Owners';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import './App.css';
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
           <Route path="/packages" element={<Packages />} />
           <Route path="/places" element={<Places />} />
           <Route path="/owners" element={<Owners />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </Router>
