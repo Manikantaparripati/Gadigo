@@ -69,6 +69,8 @@ const Register = () => {
                 <input
                   type="text"
                   required
+                  minLength={3}
+                  maxLength={50}
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="John"
@@ -83,6 +85,8 @@ const Register = () => {
                 <input
                   type="text"
                   required
+                  minLength={3}
+                  maxLength={50}
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder="Doe"
@@ -111,9 +115,10 @@ const Register = () => {
             <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Password</label>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
-              <input
+                <input
                 type="password"
                 required
+                minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
